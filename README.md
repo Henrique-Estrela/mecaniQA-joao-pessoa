@@ -2,7 +2,7 @@
 
 ## Equipe: João Pessoa
 
-Este repositório apresenta a análise inicial do histórico de manutenção da oficina, com foco em trocas de óleo e manutenções do motor.
+Este repositório apresenta a análise do histórico de manutenção da oficina, com foco em trocas de óleo e manutenções do motor, incluindo a preparação dos dados, a validação temporal dos modelos de referência e a criação de atributos temporais para etapas futuras de modelagem.
 
 ## Integrantes
 
@@ -20,7 +20,7 @@ Este repositório apresenta a análise inicial do histórico de manutenção da 
 
 ## Objetivo
 
-Entender o comportamento dos dados ao longo do tempo, verificar se há irregularidades na base e identificar padrões que ajudem na modelagem futura.
+Entender o comportamento dos dados ao longo do tempo, verificar se há irregularidades na base, validar os modelos de referência de forma temporalmente correta e criar atributos que capturem padrões históricos para uso em modelagens futuras.
 
 ## Análise inicial
 
@@ -40,21 +40,23 @@ A parte do notebook dedicada à decomposição mostra como a série se organiza 
 
 A análise sugere que a série de trocas de óleo tem uma tendência de crescimento ao longo do período, com variações mais fortes em determinados dias da semana. Esse tipo de comportamento é útil para orientar as etapas seguintes do projeto.
 
+## Engenharia de atributos temporais
+
+Foram criados novos atributos a partir da série de trocas de óleo, com o objetivo de capturar padrões históricos que possam ser usados por modelos supervisionados nas próximas etapas do projeto:
+
+* Lags (defasagens) de 1, 7 e 30 dias, capturando o valor observado em períodos anteriores.
+* Janelas rolantes (rolling windows) de 7 e 30 dias, suavizando variações de curto e médio prazo.
+
+Todos os atributos são calculados de forma estritamente causal, usando apenas informações disponíveis até o dia anterior ao período previsto, o que evita o vazamento de dados (data leakage) entre passado e futuro.
+
 ## Validação temporal e métricas de erro
 
 A validação foi refatorada para usar TimeSeriesSplit, preservando a ordem cronológica dos dados e evitando vazamento de informação entre passado e futuro. Essa abordagem é mais confiável para séries temporais do que a validação aleatória em K-Fold.
 
 As métricas calculadas para os baselines foram MAE, RMSE e MAPE, com foco em responder ao cliente da oficina: em média, quantos litros de óleo o modelo erra por dia. O RMSE destaca erros grandes, enquanto o MAE mostra o erro médio geral e o MAPE expressa o percentual de erro relativo.
 
-O baseline que se saiu melhor na avaliação temporal foi o Naive, por apresentar menor erro médio na comparação com os demais modelos de referência.
+O baseline que se saiu melhor na avaliação temporal foi a Média Móvel de 7 dias (MM7), por apresentar o menor erro em todas as métricas (MAE, RMSE e MAPE) na comparação com os demais modelos de referência.
 
 ## Como abrir o notebook
 
 Para visualizar a análise, basta abrir o arquivo [mecaniqa_joao_pessoa.ipynb](mecaniqa_joao_pessoa.ipynb) em uma IDE com suporte a Jupyter ou em um ambiente compatível.
-
-## Próximos passos
-
-* definir como tratar os valores ausentes
-* verificar se há registros duplicados ou datas fora do padrão
-* estudar melhor o padrão semanal e a tendência geral
-* preparar a base para a próxima etapa de modelagem
