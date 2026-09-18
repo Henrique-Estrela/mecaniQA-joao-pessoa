@@ -40,6 +40,14 @@ A parte do notebook dedicada à decomposição mostra como a série se organiza 
 
 A análise sugere que a série de trocas de óleo tem uma tendência de crescimento ao longo do período, com variações mais fortes em determinados dias da semana. Esse tipo de comportamento é útil para orientar as etapas seguintes do projeto.
 
+## Validação temporal e métricas de erro
+
+A validação foi refatorada para usar TimeSeriesSplit, preservando a ordem cronológica dos dados e evitando vazamento de informação entre passado e futuro. Essa abordagem é mais confiável para séries temporais do que a validação aleatória em K-Fold.
+
+As métricas calculadas para os baselines foram MAE, RMSE e MAPE, com foco em responder ao cliente da oficina: em média, quantos litros de óleo o modelo erra por dia. O RMSE destaca erros grandes, enquanto o MAE mostra o erro médio geral e o MAPE expressa o percentual de erro relativo.
+
+O baseline que se saiu melhor na avaliação temporal foi o Naive, por apresentar menor erro médio na comparação com os demais modelos de referência.
+
 ## Como abrir o notebook
 
 Para visualizar a análise, basta abrir o arquivo [mecaniqa_joao_pessoa.ipynb](mecaniqa_joao_pessoa.ipynb) em uma IDE com suporte a Jupyter ou em um ambiente compatível.
