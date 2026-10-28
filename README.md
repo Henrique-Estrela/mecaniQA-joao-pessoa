@@ -60,3 +60,29 @@ O baseline que se saiu melhor na avaliação temporal foi a Média Móvel de 7 d
 ## Como abrir o notebook
 
 Para visualizar a análise, basta abrir o arquivo [mecaniqa_joao_pessoa.ipynb](mecaniqa_joao_pessoa.ipynb) em uma IDE com suporte a Jupyter ou em um ambiente compatível.
+
+## Encontro 3: pipeline de previsão
+
+### Brainstorm guiado
+
+1. **Risco de vazamento (data leakage)?**
+   Decisão da equipe: calcular de novo a média (ou dar `fit` no scaler) com dados futuros distorce a escala e infla a precisão. O Pipeline aprende as regras só no `fit()` do treino (média, desvio, mediana) e, no `predict()`, apenas aplica o que já foi aprendido.
+
+2. **Ordem dos degraus?**
+   Decisão da equipe: **1. Imputação → 2. Encoding → 3. Scaling → 4. Modelo**. Números e textos seguem ramos diferentes no `ColumnTransformer`, e o modelo entra por último.
+
+### Fatos
+
+* A rotina está em [03_pipeline.py](03_pipeline.py).
+* O alvo é `trocas_amanha` (a série de `Trocas_Oleo` deslocada um dia).
+* O treino usa os primeiros 80% dos dias e o teste os 20% finais, sem embaralhar.
+* O `pipeline.fit(X_train, y_train)` acontece em uma linha; imputação, encoding e scaling não são recalculados no teste.
+* Não havia hiperparâmetros tunados no repositório; o estimador usado é um `RandomForestRegressor(n_estimators=100, random_state=42)`.
+
+### Execução
+
+Na raiz do repositório, com Python, pandas e scikit-learn instalados:
+
+```bash
+python 03_pipeline.py
+```
