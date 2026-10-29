@@ -2,7 +2,7 @@
 
 ## Equipe: João Pessoa
 
-Este repositório apresenta a análise do histórico de manutenção da oficina, com foco em trocas de óleo e manutenções do motor, incluindo a preparação dos dados, a validação temporal dos modelos de referência e a criação de atributos temporais para etapas futuras de modelagem.
+Este repositório apresenta a análise do histórico de manutenção da oficina, com foco em trocas de óleo e manutenções do motor. O notebook cobre a preparação dos dados, a validação temporal dos modelos de referência, a engenharia de atributos temporais e a OAT 3, com regressões clássicas, busca de hiperparâmetros e comparação final com o baseline.
 
 ## Integrantes
 
@@ -14,7 +14,8 @@ Este repositório apresenta a análise do histórico de manutenção da oficina,
 
 ## Arquivos do projeto
 
-* [mecaniqa_joao_pessoa.ipynb](mecaniqa_joao_pessoa.ipynb): notebook principal com a análise completa
+* [mecaniqa_joao_pessoa.ipynb](mecaniqa_joao_pessoa.ipynb): notebook principal com a análise, treinamento, otimização e avaliação temporal dos modelos
+* [OAT3-RELATORIO.md](OAT3-RELATORIO.md): documentação dos requisitos da OAT 3, implementações, localização no notebook e resultados registrados
 * [mecaniQA_oat1_joao_pessoa.pdf](mecaniQA_oat1_joao_pessoa.pdf): slide para apresentação
 * [mecaniqa_dataset - mecaniqa_dataset.csv.csv](mecaniqa_dataset%20-%20mecaniqa_dataset.csv.csv): base de dados utilizada
 
@@ -51,7 +52,7 @@ Todos os atributos são calculados de forma estritamente causal, usando apenas i
 
 ## Validação temporal e métricas de erro
 
-A validação foi refatorada para usar TimeSeriesSplit, preservando a ordem cronológica dos dados e evitando vazamento de informação entre passado e futuro. Essa abordagem é mais confiável para séries temporais do que a validação aleatória em K-Fold.
+A validação usa TimeSeriesSplit, preservando a ordem cronológica dos dados e evitando vazamento de informação entre passado e futuro. Essa abordagem é mais confiável para séries temporais do que a validação aleatória em K-Fold. Na OAT 3, a comparação inclui regressão linear e árvore de decisão, GridSearchCV e RandomizedSearchCV, além de uma avaliação final de baseline, modelo inicial e modelo tunado com MAE, RMSE e MAPE nos mesmos blocos de teste.
 
 As métricas calculadas para os baselines foram MAE, RMSE e MAPE, com foco em responder ao cliente da oficina: em média, quantos litros de óleo o modelo erra por dia. O RMSE destaca erros grandes, enquanto o MAE mostra o erro médio geral e o MAPE expressa o percentual de erro relativo.
 
